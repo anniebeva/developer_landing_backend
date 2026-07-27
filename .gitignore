@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/*.log
+
+# Poetry
+poetry.toml
+
+# IDE
+.idea/
+.vscode/
