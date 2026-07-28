@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import String, Text, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -19,6 +19,10 @@ class ContactRequest(Base):
 
     comment: Mapped[str] = mapped_column(Text, nullable=False)
 
-    sentiment: Mapped[str | None] = mapped_column(String(50), nullable=True)
-
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+    analysis = relationship(
+        "ContactAnalysis",
+        back_populates="contact_request",
+        uselist=False,
+    )
