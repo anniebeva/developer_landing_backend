@@ -7,6 +7,8 @@ from app.database.base import Base
 
 
 class ContactRequest(Base):
+    """Database model for incoming contact requests."""
+
     __tablename__ = "contact_requests"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -25,4 +27,5 @@ class ContactRequest(Base):
         "ContactAnalysis",
         back_populates="contact_request",
         uselist=False,
+        cascade="all, delete-orphan",
     )

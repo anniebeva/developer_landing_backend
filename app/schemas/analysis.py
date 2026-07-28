@@ -19,17 +19,22 @@ class AIAnalysisResult(BaseModel):
 
     summary: str
 
+    source: Literal[
+        "ai",
+        "fallback",
+    ]
+
 
 class ContactAnalysisResponse(BaseModel):
+    """Schema for contact analysis response."""
+
     id: int
 
     sentiment: str
     priority: str
     summary: str
+    source: str
 
     model: str | None
 
     created_at: datetime
-
-    class Config:
-        from_attributes = True

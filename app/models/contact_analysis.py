@@ -7,6 +7,8 @@ from app.database.base import Base
 
 
 class ContactAnalysis(Base):
+    """Database model for AI analysis of contact requests."""
+
     __tablename__ = "contact_analyses"
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
@@ -21,6 +23,8 @@ class ContactAnalysis(Base):
     priority: Mapped[str] = mapped_column(String(50), nullable=False)
 
     summary: Mapped[str] = mapped_column(Text, nullable=False)
+
+    source: Mapped[str] = mapped_column(String(20), default="fallback", nullable=False)
 
     model: Mapped[str | None] = mapped_column(String(100), nullable=True)
 
