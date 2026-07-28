@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.models.contact import ContactRequest
 from app.repositories import ContactRepository
 from app.schemas import ContactCreate
 
@@ -9,6 +10,11 @@ class ContactService:
         self.repository = ContactRepository(session)
 
     async def create_contact(self, contact_data: ContactCreate):
-        contact = await self.repository.create(contact_data)
+        contact = ContactRequest(
+            name=contact_data.name,
+            phone=contact_data.phone,
+            email=contact_data.email,
+            comment=contact_data.comment,
+        )
 
-        return contact
+        return await self.repository.create(contact)
