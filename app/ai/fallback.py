@@ -1,5 +1,9 @@
 from app.schemas.analysis import AIAnalysisResult
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class FallbackAnalyzer:
     """Analyze contact requests without external AI."""
@@ -11,6 +15,8 @@ class FallbackAnalyzer:
 
         sentiment = self._detect_sentiment(text)
         priority = self._detect_priority(text)
+
+        logger.info("Fallback analysis used")
 
         return AIAnalysisResult(
             sentiment=sentiment,

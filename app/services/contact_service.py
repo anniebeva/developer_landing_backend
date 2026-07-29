@@ -1,7 +1,8 @@
+import logging
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-
 from app.models.contact import ContactRequest
 from app.models.contact_analysis import ContactAnalysis
 from app.repositories import (
@@ -10,6 +11,9 @@ from app.repositories import (
 )
 from app.schemas import ContactCreate
 from app.services.ai_service import AIService
+from app.services.email_service import EmailService
+
+logger = logging.getLogger(__name__)
 
 
 class ContactService:
@@ -19,6 +23,7 @@ class ContactService:
         self.repository = ContactRepository(session)
         self.analysis_repository = ContactAnalysisRepository(session)
         self.ai_service = AIService()
+        self.email_service = EmailService()
 
     async def create_contact(
         self,
@@ -51,5 +56,17 @@ class ContactService:
         await self.analysis_repository.create(
             contact_analysis,
         )
+
+        try:
+            await self.email_service.send_contact_notification(
+                name=contact.name,
+                email=contact.email,
+                phone=contact.phone,
+                comment=contact.comment,
+            )
+        except Exception:
+            logger.exception(
+                "Failed to send email notification",
+            )
 
         return contact

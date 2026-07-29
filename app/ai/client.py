@@ -1,9 +1,13 @@
+import logging
+
 from openai import AsyncOpenAI
 import json
 
 from app.core.config import settings
 from app.ai.prompts import SYSTEM_PROMPT
 from app.schemas.analysis import AIAnalysisResult
+
+logger = logging.getLogger(__name__)
 
 client = AsyncOpenAI(
     api_key=settings.AI_API_KEY,
@@ -35,10 +39,16 @@ async def analyze_contact(comment: str) -> AIAnalysisResult | None:
 
         data = json.loads(response.choices[0].message.content)
 
-        return AIAnalysisResult(
-            **data,
-            source="ai",
+        result = AIAnalysisResult(**data, source="ai")
+
+        logger.info(
+            "AI analysis completed: sentiment=%s priority=%s",
+            result.sentiment,
+            result.priority,
         )
 
+        return result
+
     except Exception:
+        logger.exception("AI analysis failed")
         return None
