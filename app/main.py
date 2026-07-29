@@ -8,7 +8,7 @@ from app.core.config import settings
 from app.core.exceptions import ContactCreationError
 from app.core.handlers import contact_creation_exception_handler
 from app.core.logging import setup_logging
-from app.routers import contact_router, health_router
+from app.routers import contact_router, health_router, metrics_router
 
 setup_logging()
 
@@ -83,6 +83,7 @@ async def internal_server_error_handler(
 
 app.include_router(contact_router)
 app.include_router(health_router)
+app.include_router(metrics_router)
 
 
 @app.get("/")
