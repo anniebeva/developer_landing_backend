@@ -33,6 +33,7 @@ class ContactCreate(BaseModel):
 class ContactResponse(BaseModel):
     id: int
     name: str
+    phone: str
     email: str
     comment: str
     created_at: datetime
