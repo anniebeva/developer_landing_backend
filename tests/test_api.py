@@ -169,12 +169,15 @@ async def test_rate_limit(client, mock_external_services):
 async def test_ai_fallback(client):
     """Use fallback analysis when AI is unavailable."""
 
-    with patch(
-        "app.services.contact_service.AIService.analyze_contact",
-        new_callable=AsyncMock,
-    ) as mock_ai, patch(
-        "app.services.contact_service.EmailService.send_contact_notification",
-        new_callable=AsyncMock,
+    with (
+        patch(
+            "app.services.contact_service.AIService.analyze_contact",
+            new_callable=AsyncMock,
+        ) as mock_ai,
+        patch(
+            "app.services.contact_service.EmailService.send_contact_notification",
+            new_callable=AsyncMock,
+        ),
     ):
 
         mock_ai.return_value = AIAnalysisResult(
